@@ -1,7 +1,5 @@
 import 'package:darted_cli/darted_cli.dart';
-import 'package:darted_cli/io_helper.dart';
 import 'package:flutter_loc/src/callbacks/extract/find_hardcoded_strings.dart';
-import 'package:flutter_loc/src/callbacks/extract/validators/test_extract.dart';
 import 'callbacks/callbacks.exports.dart';
 
 //
