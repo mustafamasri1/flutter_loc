@@ -20,6 +20,6 @@ Future<Map<String, List<LocMatch>>> findHardcodedStrings(String wd, {List<RegExp
 
   // Convert the matches to a map of <File path, LocMatch>
   ret = Map.fromEntries(searchResult.entries.map((entry) => MapEntry(entry.key, entry.value.map((v) => LocMatch(linePosition: v.$1, lineContent: v.$2, matchesInLine: v.$3)).toList())));
-
+  print("${ret.entries.first.value[4]}");
   return ret;
 }

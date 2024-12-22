@@ -1,2 +1,2 @@
 export 'extract/extract.callback.dart';
-export './replace_callback.dart';
+export 'replace/replace_callback.dart';

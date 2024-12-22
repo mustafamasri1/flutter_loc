@@ -2,7 +2,9 @@ import 'package:darted_cli/console_helper.dart';
 import 'package:darted_cli/io_helper.dart';
 import 'package:flutter_loc/src/callbacks/extract/find_hardcoded_strings.dart';
 import 'package:flutter_loc/src/callbacks/extract/refine_finds.dart';
+import 'package:flutter_loc/src/callbacks/extract/stringify_finds.dart';
 import 'package:flutter_loc/src/callbacks/extract/validators/directory_supplied.dart';
+import 'package:flutter_loc/src/helpers/error_helper.dart';
 import 'package:flutter_loc/src/models/loc_match.model.dart';
 
 Future<void> extractCallback(Map<String, dynamic>? args, Map<String, bool>? flags) async {
@@ -37,34 +39,42 @@ Future<void> extractCallback(Map<String, dynamic>? args, Map<String, bool>? flag
   // Refinements on the search results...
   await ConsoleHelper.loadWithTask(
     task: 'Doing refinements on the extracted lines...',
-    process: () => refineFinds(finds),
+    process: () => refineFinds(finds).then((v) => finds = v),
   );
 
   // Combine the refined data into a string...
-  String hardcodedStrings = finds.entries
-          .map((map) => map.value.isNotEmpty
-              ? "##PATH\n(file://${map.key})\n#\n${map.value.map((e) => "[${e.$1}] ${RegExp('["\'](.*?)["\']').hasMatch(e.$2) ? RegExp('["\'](.*?)["\']').firstMatch(e.$2)?.group(0) : 'N/A'} => '';").toList().reduceIfNotEmpty((aa, bb) => "$aa\n$bb") ?? []}"
-              : '')
-          .toList()
-          .reduceIfNotEmpty(
-            (p1, p2) => p1.trim().isEmpty
-                ? '\n\n$p2'
-                : p2.trim().isEmpty
-                    ? "$p1\n"
-                    : "$p1\n#\n#!PATH\n\n$p2",
-          ) ??
-      '';
+  String stringifiedFinds = stringifyFinds(finds);
 
   // Export the refined data to an external file...
-  File outputFile = File('flutter_loc.txt');
-  await ConsoleHelper.loadWithTask(
-    task: 'Generating flutter_loc file...',
-    process: () => outputFile.writeAsString(hardcodedStrings),
-  );
-}
-
-extension ListExtension<E> on List<E>? {
-  E? reduceIfNotEmpty(E Function(E a, E b) condition) {
-    return this == null || this!.isEmpty ? null : this!.reduce((aa, bb) => condition(aa, bb));
+  if (!isDryRun) {
+    File outputFile = File('${outputDirectory?.path ?? '.'}${Platform.pathSeparator}flutter_loc.txt');
+    await ConsoleHelper.loadWithTask(
+      task: 'Generating flutter_loc file...',
+      process: () async {
+        if (!await IOHelper.file.exists(outputFile.path) || isOverwrite) {
+          return outputFile.writeAsString(stringifiedFinds);
+        } else {
+          // Throw an error that the file already exists.
+          ErrorHelper.print("The file already exists in the supplied directory. Either change the output directory or use the '--overwrite | -ow' flag");
+          ConsoleHelper.exit(1);
+        }
+      },
+    );
+  } else {
+    // Output dry run statistics.
+    ConsoleHelper.write('==== Dry run ===='.withColor(ConsoleColor.cyan), newLine: true);
+    ConsoleHelper.writeSpace();
+    ConsoleHelper.write(
+        "Found ${finds.entries.map((a) => a.value).toList().reduce((b, c) => [...b, ...c]).toList().map((d) => d.matchesInLine.entries.toList()).toList().reduce((e, f) => [
+                  ...e,
+                  ...f
+                ]).toList().length} matches in ${finds.entries.length} files."
+            .withColor(ConsoleColor.lightWhite),
+        newLine: true);
+    ConsoleHelper.write("To extract the data into the output file, Run the command without the '--dry-run' flag".withColor(ConsoleColor.grey), newLine: true);
+    ConsoleHelper.writeSpace();
+    ConsoleHelper.write('==== Dry run ===='.withColor(ConsoleColor.cyan), newLine: true);
+    ConsoleHelper.writeSpace();
+    ConsoleHelper.exit(0);
   }
 }

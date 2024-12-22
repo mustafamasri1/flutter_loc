@@ -1,0 +1,55 @@
+##PATH-START{file://D:\Private\flutter_loc\testing\test.dart}##
+#----------#
+##MATCH-LINE{3}##
+(23) "MyApp" ===> "" !;;!
+
+##MATCH-LINE{4}##
+(27) 'A simple app' ===> "" !;;!
+
+##MATCH-LINE{8}##
+(8) 'Hello, World!' ===> "Hello, Trans!!" !;;!
+
+##MATCH-LINE{9}##
+(8) "Welcome to MyApp." ===> "" !;;!
+
+##MATCH-LINE{10}##
+(16) "some Data" ===> "" !;;!
+(28) "dataaa2" ===> "" !;;!
+
+##MATCH-LINE{11}##
+(28) 'I am hard-coded.' ===> "" !;;!
+
+##MATCH-LINE{12}##
+(23) 'I am hard-coded. with $varr' ===> "" !;;!
+
+##MATCH-LINE{13}##
+(29) 'I am hard-coded. ${' ===> "" !;;!
+(75) '} in here!' ===> "" !;;!
+
+##MATCH-LINE{14}##
+(23) "someFii" ===> "Some Transs" !;;!
+(35) 'Some other' ===> "Others Trans" !;;!
+
+##MATCH-LINE{15}##
+(29) "somFirst" ===> "" !;;!
+(40) "SomeOthers!" ===> "That's it in here" !;;!
+
+##MATCH-LINE{17}##
+(29) """I am hard-coded.
+  Some
+  Things
+  Change
+  ...""" ===> """The trans of the multi-line!
+   with another some's 
+     line
+   ...""" !;;!
+
+##MATCH-LINE{24}##
+(20) 'ignored string' ===> "Ignored 1 trans" !;;!
+
+##MATCH-LINE{27}##
+(16) 'ignored string' ===> "Ignored 2 trans" !;;!
+
+#----------#
+##PATH-END##
+
