@@ -16,10 +16,13 @@ String stringifyFinds(
       .replaceAll('+_+', '');
 }
 
-String craftPlaceholder(String originalText) => originalText.toLowerCase().replaceAll(' ', '_');
+String craftPlaceholder(String originalText) =>
+    originalText.toLowerCase().replaceAll(' ', '_');
 
 extension ListExtension<E> on List<E>? {
   E? reduceIfNotEmpty(E Function(E a, E b) condition) {
-    return this == null || this!.isEmpty ? null : this!.reduce((aa, bb) => condition(aa, bb));
+    return this == null || this!.isEmpty
+        ? null
+        : this!.reduce((aa, bb) => condition(aa, bb));
   }
 }

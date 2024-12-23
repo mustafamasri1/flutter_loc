@@ -2,10 +2,13 @@ import 'package:darted_cli/io_helper.dart';
 
 import '../../models/loc_replacement.model.dart';
 
-Future<Map<String, String>> replaceFileContent(Map<String, List<LocReplacement>> parsedReplacementMap, {String replacementSuffix = ".tr()"}) async {
+Future<Map<String, String>> replaceFileContent(
+    Map<String, List<LocReplacement>> parsedReplacementMap,
+    {String replacementSuffix = ".tr()"}) async {
   Map<String, String> redefinedMap = {};
   // Loop through the replacement file pathes
-  await Future.forEach(parsedReplacementMap.entries, (parsedReplacementFileEntry) async {
+  await Future.forEach(parsedReplacementMap.entries,
+      (parsedReplacementFileEntry) async {
     // Open the file's path
     final File file = File(parsedReplacementFileEntry.key);
     final String fileContent = await file.readAsString();
@@ -14,20 +17,25 @@ Future<Map<String, String>> replaceFileContent(Map<String, List<LocReplacement>>
     String newFileContent = fileContent;
 
     // Loop through the different replacements to do in that file.
-    await Future.forEach(parsedReplacementFileEntry.value, (replacementToDo) async {
+    await Future.forEach(parsedReplacementFileEntry.value,
+        (replacementToDo) async {
       // Loop through the positional replacements.
-      await Future.forEach(replacementToDo.matchesInLine.entries, (positionedReplacement) async {
+      await Future.forEach(replacementToDo.matchesInLine.entries,
+          (positionedReplacement) async {
         String iNeedToReplace = positionedReplacement.value.$1;
         String replaceItWith = positionedReplacement.value.$2;
         //
         if (!isContentEmpty(replaceItWith.trim())) {
-          RegExp matchPattern = RegExp(RegExp.escape(normalizeWhitespace(iNeedToReplace)), dotAll: true);
+          RegExp matchPattern = RegExp(
+              RegExp.escape(normalizeWhitespace(iNeedToReplace)),
+              dotAll: true);
           String fileContentPattern = normalizeWhitespace(newFileContent);
           //
           final match = matchPattern.firstMatch(fileContentPattern);
           if (match != null && match.group(0) != null) {
             redefinedMap.addEntries([MapEntry(iNeedToReplace, replaceItWith)]);
-            newFileContent = fileContentPattern.replaceFirst(matchPattern, "${replaceItWith.trim()}$replacementSuffix");
+            newFileContent = fileContentPattern.replaceFirst(
+                matchPattern, "${replaceItWith.trim()}$replacementSuffix");
           }
         }
       });
@@ -58,9 +66,14 @@ bool isContentEmpty(String content) {
     // Ensure the content has matching opening and closing quotes
     if (content.length >= quoteType.length * 2 && content.endsWith(quoteType)) {
       // Step 3: Remove only the matching quotes
-      cleanedContent = content.substring(quoteType.length, content.length - quoteType.length);
+      cleanedContent = content.substring(
+          quoteType.length, content.length - quoteType.length);
     }
   }
   // Step 4: Trim and check for empty content
-  return cleanedContent.trim().isEmpty || cleanedContent == '""' || cleanedContent == "''" || cleanedContent == "''''''" || cleanedContent == '""""""';
+  return cleanedContent.trim().isEmpty ||
+      cleanedContent == '""' ||
+      cleanedContent == "''" ||
+      cleanedContent == "''''''" ||
+      cleanedContent == '""""""';
 }

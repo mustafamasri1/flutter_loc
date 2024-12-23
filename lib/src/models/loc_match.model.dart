@@ -37,25 +37,31 @@ class LocMatch {
     return LocMatch(
       linePosition: map['linePosition'] as int,
       lineContent: map['lineContent'] as String,
-      matchesInLine: Map<int, String>.from(map['matchesInLine'] as Map<int, String>),
+      matchesInLine:
+          Map<int, String>.from(map['matchesInLine'] as Map<int, String>),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory LocMatch.fromJson(String source) => LocMatch.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory LocMatch.fromJson(String source) =>
+      LocMatch.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() => 'LocMatch(linePosition: $linePosition, lineContent: $lineContent, matchesInLine: $matchesInLine)';
+  String toString() =>
+      'LocMatch(linePosition: $linePosition, lineContent: $lineContent, matchesInLine: $matchesInLine)';
 
   @override
   bool operator ==(covariant LocMatch other) {
     if (identical(this, other)) return true;
     final mapEquals = const DeepCollectionEquality().equals;
 
-    return other.linePosition == linePosition && other.lineContent == lineContent && mapEquals(other.matchesInLine, matchesInLine);
+    return other.linePosition == linePosition &&
+        other.lineContent == lineContent &&
+        mapEquals(other.matchesInLine, matchesInLine);
   }
 
   @override
-  int get hashCode => linePosition.hashCode ^ lineContent.hashCode ^ matchesInLine.hashCode;
+  int get hashCode =>
+      linePosition.hashCode ^ lineContent.hashCode ^ matchesInLine.hashCode;
 }

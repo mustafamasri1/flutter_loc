@@ -1,14 +1,15 @@
 import 'package:darted_cli/console_helper.dart';
 import 'package:darted_cli/io_helper.dart';
-import 'package:flutter_loc/src/callbacks/extract/find_hardcoded_strings.dart';
-import 'package:flutter_loc/src/callbacks/extract/generate_visit_log.dart';
-import 'package:flutter_loc/src/callbacks/extract/refine_finds.dart';
-import 'package:flutter_loc/src/callbacks/extract/stringify_finds.dart';
-import 'package:flutter_loc/src/callbacks/extract/validators/directory_supplied.dart';
-import 'package:flutter_loc/src/helpers/error_helper.dart';
-import 'package:flutter_loc/src/models/loc_match.model.dart';
+import 'find_hardcoded_strings.dart';
+import 'generate_visit_log.dart';
+import 'refine_finds.dart';
+import 'stringify_finds.dart';
+import 'validators/directory_supplied.dart';
+import '../../helpers/error_helper.dart';
+import '../../models/loc_match.model.dart';
 
-Future<void> extractCallback(Map<String, dynamic>? args, Map<String, bool>? flags) async {
+Future<void> extractCallback(
+    Map<String, dynamic>? args, Map<String, bool>? flags) async {
   // Make sure i have the required arguments.
   validateDirectorySupplied(args);
 
@@ -22,7 +23,8 @@ Future<void> extractCallback(Map<String, dynamic>? args, Map<String, bool>? flag
 
   // Define the directories
   Directory sourceDirectory = Directory(sourceDirectoryArg);
-  Directory? outputDirectory = outputDirectoryArg != null ? Directory(outputDirectoryArg) : null;
+  Directory? outputDirectory =
+      outputDirectoryArg != null ? Directory(outputDirectoryArg) : null;
 
   // Change into that directory
   await IOHelper.directory.change(sourceDirectory.path);
@@ -58,7 +60,8 @@ Future<void> extractCallback(Map<String, dynamic>? args, Map<String, bool>? flag
 
   // Export the refined data to an external file...
   if (!isDryRun) {
-    File outputFile = File('${outputDirectory?.path ?? '.'}${Platform.pathSeparator}flutter_loc.txt');
+    File outputFile = File(
+        '${outputDirectory?.path ?? '.'}${Platform.pathSeparator}flutter_loc.txt');
     await ConsoleHelper.loadWithTask(
       task: 'Generating flutter_loc file...',
       process: () async {
@@ -66,14 +69,16 @@ Future<void> extractCallback(Map<String, dynamic>? args, Map<String, bool>? flag
           return outputFile.writeAsString(stringifiedFinds);
         } else {
           // Throw an error that the file already exists.
-          ErrorHelper.print("The file already exists in the supplied directory. Either change the output directory or use the '--overwrite | -ow' flag");
+          ErrorHelper.print(
+              "The file already exists in the supplied directory. Either change the output directory or use the '--overwrite | -ow' flag");
           ConsoleHelper.exit(1);
         }
       },
     );
   } else {
     // Output dry run statistics.
-    ConsoleHelper.write('==== Dry run ===='.withColor(ConsoleColor.cyan), newLine: true);
+    ConsoleHelper.write('==== Dry run ===='.withColor(ConsoleColor.cyan),
+        newLine: true);
     ConsoleHelper.writeSpace();
     ConsoleHelper.write(
         "Found ${finds.entries.map((a) => a.value).toList().reduce((b, c) => [...b, ...c]).toList().map((d) => d.matchesInLine.entries.toList()).toList().reduce((e, f) => [
@@ -82,9 +87,13 @@ Future<void> extractCallback(Map<String, dynamic>? args, Map<String, bool>? flag
                 ]).toList().length} matches in ${finds.entries.length} files."
             .withColor(ConsoleColor.lightWhite),
         newLine: true);
-    ConsoleHelper.write("To extract the data into the output file, Run the command without the '--dry-run' flag".withColor(ConsoleColor.grey), newLine: true);
+    ConsoleHelper.write(
+        "To extract the data into the output file, Run the command without the '--dry-run' flag"
+            .withColor(ConsoleColor.grey),
+        newLine: true);
     ConsoleHelper.writeSpace();
-    ConsoleHelper.write('==== Dry run ===='.withColor(ConsoleColor.cyan), newLine: true);
+    ConsoleHelper.write('==== Dry run ===='.withColor(ConsoleColor.cyan),
+        newLine: true);
     ConsoleHelper.writeSpace();
     ConsoleHelper.exit(0);
   }

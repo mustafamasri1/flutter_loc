@@ -1,6 +1,7 @@
-import 'package:flutter_loc/src/models/loc_match.model.dart';
+import '../../models/loc_match.model.dart';
 
-Future<Map<String, List<LocMatch>>> refineFinds(Map<String, List<LocMatch>> inputFinds) async {
+Future<Map<String, List<LocMatch>>> refineFinds(
+    Map<String, List<LocMatch>> inputFinds) async {
   Map<String, List<LocMatch>> outputFinds = inputFinds;
   await Future.forEach(inputFinds.entries, (inputEntry) async {
     //S2 -- Per-line enhancements
@@ -8,10 +9,15 @@ Future<Map<String, List<LocMatch>>> refineFinds(Map<String, List<LocMatch>> inpu
       List<LocMatch> matches = findEntry.value;
 
       //1. Remove imports & exports
-      matches = matches..removeWhere((matchItem) => (matchItem.lineContent.trim().startsWith('import') || matchItem.lineContent.trim().startsWith('export')));
+      matches = matches
+        ..removeWhere((matchItem) =>
+            (matchItem.lineContent.trim().startsWith('import') ||
+                matchItem.lineContent.trim().startsWith('export')));
 
       //2. Remove One-line comments
-      matches = matches..removeWhere((matchItem) => (matchItem.lineContent.trim().startsWith('//')));
+      matches = matches
+        ..removeWhere(
+            (matchItem) => (matchItem.lineContent.trim().startsWith('//')));
 
       //S2 -- Per-position enhancements
       await Future.forEach(matches, (matchValue) async {
@@ -19,14 +25,20 @@ Future<Map<String, List<LocMatch>>> refineFinds(Map<String, List<LocMatch>> inpu
         m = Map.fromEntries(m.entries.toList()
           ..removeWhere((e) {
             //1.Remove strings followed by tr()
-            bool isFollowedByTr = matchValue.lineContent.length > ((e.key) + e.value.length) && matchValue.lineContent.substring(e.key + e.value.length).startsWith(r'.tr()');
+            bool isFollowedByTr =
+                matchValue.lineContent.length > ((e.key) + e.value.length) &&
+                    matchValue.lineContent
+                        .substring(e.key + e.value.length)
+                        .startsWith(r'.tr()');
 
             return isFollowedByTr;
           }));
-        matches[matches.indexOf(matchValue)] = matchValue.copyWith(matchesInLine: m);
+        matches[matches.indexOf(matchValue)] =
+            matchValue.copyWith(matchesInLine: m);
       });
 
-      outputFinds[findEntry.key] = matches..removeWhere((mm) => mm.matchesInLine.isEmpty);
+      outputFinds[findEntry.key] = matches
+        ..removeWhere((mm) => mm.matchesInLine.isEmpty);
     });
   });
   return outputFinds;

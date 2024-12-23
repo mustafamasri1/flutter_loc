@@ -9,10 +9,17 @@ Future<String> defaultEntryHelper(List<DartedCommand> commandsTree) async {
       "flutter_loc is a powerful localization tool for Flutter, streamlining multilingual support with automated parsing and easy file integration. Simplify global app development with seamless JSON and YAML handling.";
   //
   bool hasSubCommands = commandsTree.isNotEmpty;
-  Map<String, String> subCommandsHelpersMap = Map.fromEntries(commandsTree.map((s) => MapEntry(s.name, s.helperDescription ?? 'No Helper Message.')).toList());
-  String? justifiedCommands = hasSubCommands && subCommandsHelpersMap.isNotEmpty ? ConsoleHelper.justifyMap(subCommandsHelpersMap, gapSeparatorSize: 8, preKey: '| ').reduce((a, b) => "$a\n$b") : null;
+  Map<String, String> subCommandsHelpersMap = Map.fromEntries(commandsTree
+      .map((s) => MapEntry(s.name, s.helperDescription ?? 'No Helper Message.'))
+      .toList());
+  String? justifiedCommands = hasSubCommands && subCommandsHelpersMap.isNotEmpty
+      ? ConsoleHelper.justifyMap(subCommandsHelpersMap,
+              gapSeparatorSize: 8, preKey: '| ')
+          .reduce((a, b) => "$a\n$b")
+      : null;
   //
-  String packageArt = await AsciiArtModule.textToAscii(packageName, beforeEachLine: "|  ", color: ConsoleColor.green);
+  String packageArt = await AsciiArtModule.textToAscii(packageName,
+      beforeEachLine: "|  ", color: ConsoleColor.green);
   String usage = "Usage: $packageName sub-command [arguments...] (flags...)";
   return """
 $startPrint
