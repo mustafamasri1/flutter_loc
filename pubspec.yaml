@@ -6,14 +6,12 @@ repository: https://github.com/micazi/flutter_loc
 environment:
   sdk: ^3.6.0
 
-# Add regular dependencies here.
 dependencies:
   darted_cli: ^0.1.17
   analyzer: ^7.1.0
 
-  collection: any
 dev_dependencies:
-  lints: ^5.1.0
+  lints: ^5.1.1
 
 executables:
   flutter_loc:

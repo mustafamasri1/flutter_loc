@@ -1,8 +1,5 @@
 import 'dart:convert';
 
-// ignore: depend_on_referenced_packages
-import 'package:collection/collection.dart';
-
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class LocReplacement {
   int linePosition;
@@ -25,15 +22,6 @@ class LocReplacement {
   @override
   String toString() =>
       'LocReplacement(linePosition: $linePosition, matchesInLine: $matchesInLine)';
-
-  @override
-  bool operator ==(covariant LocReplacement other) {
-    if (identical(this, other)) return true;
-    final mapEquals = const DeepCollectionEquality().equals;
-
-    return other.linePosition == linePosition &&
-        mapEquals(other.matchesInLine, matchesInLine);
-  }
 
   @override
   int get hashCode => linePosition.hashCode ^ matchesInLine.hashCode;

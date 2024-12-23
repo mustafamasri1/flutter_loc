@@ -1,6 +1,3 @@
-// ignore: depend_on_referenced_packages
-import 'package:collection/collection.dart';
-
 /// A match model of all the matches in one line.
 class LocMatch {
   /// On which line is this match.
@@ -32,16 +29,6 @@ class LocMatch {
   @override
   String toString() =>
       'LocMatch(linePosition: $linePosition, lineContent: $lineContent, matchesInLine: $matchesInLine)';
-
-  @override
-  bool operator ==(covariant LocMatch other) {
-    if (identical(this, other)) return true;
-    final mapEquals = const DeepCollectionEquality().equals;
-
-    return other.linePosition == linePosition &&
-        other.lineContent == lineContent &&
-        mapEquals(other.matchesInLine, matchesInLine);
-  }
 
   @override
   int get hashCode =>
