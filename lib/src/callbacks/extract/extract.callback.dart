@@ -8,6 +8,7 @@ import 'validators/directory_supplied.dart';
 import '../../helpers/error_helper.dart';
 import '../../models/loc_match.model.dart';
 
+/// Main callback to extract the hard-coded strings from the supplied directory and dump it to the `flutter_loc.txt` file.
 Future<void> extractCallback(
     Map<String, dynamic>? args, Map<String, bool>? flags) async {
   // Make sure i have the required arguments.

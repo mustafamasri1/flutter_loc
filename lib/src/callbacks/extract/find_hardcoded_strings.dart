@@ -1,6 +1,7 @@
 import 'package:darted_cli/io_helper.dart';
 import '../../models/loc_match.model.dart';
 
+/// Find hard-coded strings in the supplied directory.
 Future<Map<String, List<LocMatch>>> findHardcodedStrings(String wd,
     {List<RegExp>? filesToExclude}) async {
   Map<String, List<LocMatch>> ret = {};

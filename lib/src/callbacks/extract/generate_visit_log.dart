@@ -3,6 +3,7 @@ import 'stringify_finds.dart';
 
 import '../../models/loc_match.model.dart';
 
+/// Generate the visited file log file.
 Future<void> generateVisitLog(
     String wd, Map<String, List<LocMatch>> findResults) async {
   Map<String, int> visitMap = {};

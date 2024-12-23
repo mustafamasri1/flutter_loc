@@ -1,11 +1,15 @@
-import 'dart:convert';
-
 // ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
 
+/// A match model of all the matches in one line.
 class LocMatch {
+  /// On which line is this match.
   int linePosition;
+
+  /// What is the content of the entire match.
   String lineContent;
+
+  /// Map of the matched content in this line, with it's matching position.
   Map<int, String> matchesInLine;
   LocMatch({
     required this.linePosition,
@@ -24,28 +28,6 @@ class LocMatch {
       matchesInLine: matchesInLine ?? this.matchesInLine,
     );
   }
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'linePosition': linePosition,
-      'lineContent': lineContent,
-      'matchesInLine': matchesInLine,
-    };
-  }
-
-  factory LocMatch.fromMap(Map<String, dynamic> map) {
-    return LocMatch(
-      linePosition: map['linePosition'] as int,
-      lineContent: map['lineContent'] as String,
-      matchesInLine:
-          Map<int, String>.from(map['matchesInLine'] as Map<int, String>),
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory LocMatch.fromJson(String source) =>
-      LocMatch.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() =>

@@ -1,6 +1,7 @@
 import '../../constants.dart';
 import '../../models/loc_replacement.model.dart';
 
+/// Parse the file content to a list of structured models to replace the matches.
 Future<Map<String, List<LocReplacement>>> parseFileContent(
     String fileData) async {
   final Map<String, List<LocReplacement>> result = {};

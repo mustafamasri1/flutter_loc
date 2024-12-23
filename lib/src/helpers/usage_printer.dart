@@ -1,6 +1,7 @@
 import 'package:darted_cli/console_helper.dart';
 import 'package:darted_cli/darted_cli.dart';
 
+/// Print the usage (help) describtion.
 String commandsUsagePrinter(DartedCommand command) {
   String helpDescription =
       "${command.name.withColor(ConsoleColor.cyan)} :- ${command.helperDescription}";

@@ -1,5 +1,6 @@
 import 'package:darted_cli/io_helper.dart';
 
+/// Generate the specified lang files and include the keys supplied.
 Future<void> generateLangFiles(String path, Map<String, String> redefinedMap,
     List<String> langs, String mainLang) async {
   //Create the directory
@@ -18,6 +19,7 @@ Future<void> generateLangFiles(String path, Map<String, String> redefinedMap,
   });
 }
 
+/// Clean the string content of quotes.
 String cleanContent(String content) {
   String cleanedContent = content;
   // Return true if the content itself is empty.

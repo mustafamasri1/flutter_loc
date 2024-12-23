@@ -7,6 +7,7 @@ import 'generate_lang_files.dart';
 import 'parse_content.dart';
 import 'replace_content.dart';
 
+/// Main callback to replace the hard-coded strings with the supplied keys and generate specified lang files.
 Future<void> replaceCallback(
     Map<String, dynamic>? args, Map<String, bool>? flags) async {
   File flutterLocFile = File(args?['path'] ?? args?['p'] ?? 'flutter_loc.txt');

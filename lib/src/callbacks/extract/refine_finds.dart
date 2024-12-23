@@ -1,5 +1,6 @@
 import '../../models/loc_match.model.dart';
 
+/// Refine the finds.
 Future<Map<String, List<LocMatch>>> refineFinds(
     Map<String, List<LocMatch>> inputFinds) async {
   Map<String, List<LocMatch>> outputFinds = inputFinds;

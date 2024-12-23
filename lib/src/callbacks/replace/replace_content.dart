@@ -2,6 +2,7 @@ import 'package:darted_cli/io_helper.dart';
 
 import '../../models/loc_replacement.model.dart';
 
+/// Replace the hard-coded strings with the provided l10n keys.
 Future<Map<String, String>> replaceFileContent(
     Map<String, List<LocReplacement>> parsedReplacementMap,
     {String replacementSuffix = ".tr()"}) async {
@@ -49,10 +50,12 @@ Future<Map<String, String>> replaceFileContent(
   return redefinedMap;
 }
 
+/// Normalize the input's white space.
 String normalizeWhitespace(String input) {
   return input.replaceAll(RegExp(r'\r\n?'), '\n').trim();
 }
 
+/// Check if the content is empty or not.
 bool isContentEmpty(String content) {
   String cleanedContent = content;
 

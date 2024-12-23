@@ -1,6 +1,7 @@
 import '../../constants.dart';
 import '../../models/loc_match.model.dart';
 
+/// Turn the refined finds into a stringified version with special pattern.
 String stringifyFinds(
   Map<String, List<LocMatch>> finds,
   bool populatePlaceholders,
@@ -16,10 +17,12 @@ String stringifyFinds(
       .replaceAll('+_+', '');
 }
 
+/// Create a placeholder for the original text.
 String craftPlaceholder(String originalText) =>
     originalText.toLowerCase().replaceAll(' ', '_');
 
 extension ListExtension<E> on List<E>? {
+  /// Check if the list is empty before reducing it.
   E? reduceIfNotEmpty(E Function(E a, E b) condition) {
     return this == null || this!.isEmpty
         ? null
