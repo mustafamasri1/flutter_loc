@@ -1,18 +1,18 @@
 name: flutter_loc
-description: flutter_loc is a powerful localization tool for Flutter, streamlining multilingual support with automated parsing and easy file integration. Simplify global app development with seamless JSON and YAML handling.
-version: 1.0.4+2
-# repository: https://github.com/my_org/my_repo
+description: flutter_loc is a powerful localization tool for Flutter, streamlining multilingual support with automated parsing of hard-coded strings and providing quick replacement techniques for convenience.
+version: 0.1.0
+repository: https://github.com/micazi/flutter_loc
 
 environment:
   sdk: ^3.6.0
 
 # Add regular dependencies here.
 dependencies:
-  darted_cli: ^0.1.15
+  darted_cli: ^0.1.17
   analyzer: ^7.1.0
 
 dev_dependencies:
   lints: ^5.1.0
 
 executables:
-  flutter_loc: "flutter_loc"
+  flutter_loc:

@@ -1,7 +1,10 @@
 import '../../constants.dart';
 import '../../models/loc_match.model.dart';
 
-String stringifyFinds(Map<String, List<LocMatch>> finds, bool populatePlaceholders) {
+String stringifyFinds(
+  Map<String, List<LocMatch>> finds,
+  bool populatePlaceholders,
+) {
   return finds.entries
       .map((entry) => entry.value.isNotEmpty
           ? "${fileStartDelimeter(entry.key)}\n$pathToMatchesDelimeter\n${entry.value.map((matchValue) => "${matchesToMatchesDelimeter(matchValue.linePosition.toString())}\n${matchValue.matchesInLine.entries.toList().map((mEntry) => "(${mEntry.key}) ${mEntry.value} $contentDelimeter ${populatePlaceholders ? craftPlaceholder(mEntry.value) : '""'} $lineEndDelimeter\n").toList().join('+_+').replaceAll('+_+', '')}").toList().reduceIfNotEmpty((a, b) => "$a\n$b") ?? []}"

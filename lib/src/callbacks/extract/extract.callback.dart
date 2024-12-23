@@ -1,6 +1,7 @@
 import 'package:darted_cli/console_helper.dart';
 import 'package:darted_cli/io_helper.dart';
 import 'package:flutter_loc/src/callbacks/extract/find_hardcoded_strings.dart';
+import 'package:flutter_loc/src/callbacks/extract/generate_visit_log.dart';
 import 'package:flutter_loc/src/callbacks/extract/refine_finds.dart';
 import 'package:flutter_loc/src/callbacks/extract/stringify_finds.dart';
 import 'package:flutter_loc/src/callbacks/extract/validators/directory_supplied.dart';
@@ -16,6 +17,7 @@ Future<void> extractCallback(Map<String, dynamic>? args, Map<String, bool>? flag
   String? outputDirectoryArg = args['output'] ?? args['o'];
   bool isDryRun = flags?['dry-run'] ?? flags?['dr'] ?? false;
   bool isOverwrite = flags?['overwrite'] ?? flags?['ow'] ?? false;
+  bool willGenerateVisitLog = flags?['log'] ?? flags?['l'] ?? false;
   bool populatePlaceholders = flags?['populate'] ?? flags?['pop'] ?? false;
 
   // Define the directories
@@ -42,6 +44,14 @@ Future<void> extractCallback(Map<String, dynamic>? args, Map<String, bool>? flag
     task: 'Doing refinements on the extracted lines...',
     process: () => refineFinds(finds).then((v) => finds = v),
   );
+
+  if (willGenerateVisitLog) {
+    // Generate the visit log.
+    await ConsoleHelper.loadWithTask(
+      task: 'Generating the visit log...',
+      process: () => generateVisitLog(wd, finds),
+    );
+  }
 
   // Combine the refined data into a string...
   String stringifiedFinds = stringifyFinds(finds, populatePlaceholders);
