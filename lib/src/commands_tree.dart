@@ -1,36 +1,8 @@
 import 'package:darted_cli/darted_cli.dart';
-import 'package:flutter_loc/src/callbacks/extract/find_hardcoded_strings.dart';
 import 'callbacks/callbacks.exports.dart';
 
 //
 List<DartedCommand> commandsTree = [
-  //S1 - Test
-  DartedCommand(
-    name: 'test',
-    helperDescription: "Test.",
-    arguments: [
-      // DartedArgument(name: 'command', abbreviation: 'c', isMultiOption: false, defaultValue: 'lib'),
-    ],
-    callback: (args, flags) async {
-      await findHardcodedStrings('./testing');
-      // Read a Dart file.
-      // var dartFile = File('testing/test.dart');
-      // var dartCode = dartFile.readAsStringSync();
-
-      // Extract hard-coded strings.
-      // var extractor = HardCodedStringExtractor();
-      // var hardCodedStrings = extractor.extractHardCodedStrings(dartCode);
-
-      // Print the results.
-      // print('Hard-coded strings found:');
-      // for (var string in hardCodedStrings) {
-      //   print('- "$string"');
-      // }
-      // Map<String, List<(int, String)>> res = await IOHelper.file.search('.', RegExp('coco'));
-      // ConsoleHelper.write(res.toString());
-      // ConsoleHelper.exit(1);
-    },
-  ),
   //S1 - Extract
   DartedCommand(
     name: 'extract',
@@ -42,6 +14,7 @@ List<DartedCommand> commandsTree = [
     flags: [
       DartedFlag(name: 'dry-run', abbreviation: 'dr', canBeNegated: false, appliedByDefault: false),
       DartedFlag(name: 'overwrite', abbreviation: 'ow', canBeNegated: false, appliedByDefault: false),
+      DartedFlag(name: 'populate', abbreviation: 'pop', canBeNegated: false, appliedByDefault: false),
     ],
     callback: (args, flags) async => await extractCallback(args, flags),
   ),

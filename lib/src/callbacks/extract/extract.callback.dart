@@ -16,6 +16,7 @@ Future<void> extractCallback(Map<String, dynamic>? args, Map<String, bool>? flag
   String? outputDirectoryArg = args['output'] ?? args['o'];
   bool isDryRun = flags?['dry-run'] ?? flags?['dr'] ?? false;
   bool isOverwrite = flags?['overwrite'] ?? flags?['ow'] ?? false;
+  bool populatePlaceholders = flags?['populate'] ?? flags?['pop'] ?? false;
 
   // Define the directories
   Directory sourceDirectory = Directory(sourceDirectoryArg);
@@ -43,7 +44,7 @@ Future<void> extractCallback(Map<String, dynamic>? args, Map<String, bool>? flag
   );
 
   // Combine the refined data into a string...
-  String stringifiedFinds = stringifyFinds(finds);
+  String stringifiedFinds = stringifyFinds(finds, populatePlaceholders);
 
   // Export the refined data to an external file...
   if (!isDryRun) {

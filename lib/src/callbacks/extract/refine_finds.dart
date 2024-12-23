@@ -8,7 +8,10 @@ Future<Map<String, List<LocMatch>>> refineFinds(Map<String, List<LocMatch>> inpu
       List<LocMatch> matches = findEntry.value;
 
       //1. Remove imports & exports
-      matches = matches..removeWhere((matchItem) => (matchItem.lineContent.startsWith('import') || matchItem.lineContent.startsWith('export')));
+      matches = matches..removeWhere((matchItem) => (matchItem.lineContent.trim().startsWith('import') || matchItem.lineContent.trim().startsWith('export')));
+
+      //2. Remove One-line comments
+      matches = matches..removeWhere((matchItem) => (matchItem.lineContent.trim().startsWith('//')));
 
       //S2 -- Per-position enhancements
       await Future.forEach(matches, (matchValue) async {

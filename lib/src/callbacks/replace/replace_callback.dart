@@ -1,10 +1,9 @@
-import 'dart:convert';
+import 'dart:io';
 import 'package:darted_cli/console_helper.dart';
-import 'package:darted_cli/io_helper.dart';
 import 'package:flutter_loc/src/callbacks/replace/validators/loc_file_supplied.dart';
 import 'package:flutter_loc/src/models/loc_replacement.model.dart';
 
-import '../../models/loc_match.model.dart';
+import 'generate_lang_files.dart';
 import 'parse_content.dart';
 import 'replace_content.dart';
 
@@ -29,40 +28,21 @@ Future<void> replaceCallback(Map<String, dynamic>? args, Map<String, bool>? flag
   );
 
   // Replace all the parsed data.
+  Map<String, String> redefinedMap = {};
   await ConsoleHelper.loadWithTask(
     task: 'Replacing the hard-coded strings with the provided replacements...',
-    process: () async => await replaceFileContent(parsedReplacementMap),
+    process: () async => await replaceFileContent(parsedReplacementMap).then((v) => redefinedMap = v),
   );
 
   // Get the desired language files.
-  // List<String> langs = (args?['languages'] ?? args?['l'])?.toString().split(',') ?? ['en'];
-  // String mainLang = (args?['main-language'] ?? args?['m']) ?? 'en';
+  List<String> langs = (args?['languages'] ?? args?['l'])?.toString().split(',') ?? ['en'];
+  String mainLang = (args?['main-language'] ?? args?['m']) ?? 'en';
 
   // Generate the l10n files
-  // await ConsoleHelper.loadWithTask(
-  //   task: 'Generating l10n files...',
-  //   process: () async => await generateLangFiles(flutterLocFile.parent.path, parsedMap, langs, mainLang),
-  // );
+  await ConsoleHelper.loadWithTask(
+    task: 'Generating l10n files...',
+    process: () async => await generateLangFiles(flutterLocFile.parent.path, redefinedMap, langs, mainLang),
+  );
 
-  // flutterLocFile.writeAsString("\n\n\n======== DONE with the replacements! ========", mode: FileMode.append);
-}
-
-generateLangFiles(
-  String path,
-  Map<String, List<(int, String, String)>> parsedMap,
-  List<String> langs,
-  String mainLang,
-) async {
-  //Create the directory
-  Directory d = await IOHelper.directory.create("$path/l10n");
-
-  await Future.forEach(langs, (lang) async {
-    // Create the files
-    File langFile = await IOHelper.file.create("${d.path}/$lang.json");
-
-    Map<String, dynamic> jsonMap = Map.fromEntries(parsedMap.values.reduce((a, b) => [...a, ...b]).toList().map((l) => MapEntry(l.$3.trim(), lang == mainLang ? l.$2.trim() : '')));
-
-    // Write the data to the files...
-    await langFile.writeAsString(jsonEncode(jsonMap));
-  });
+  flutterLocFile.writeAsString("\n\n\n======== DONE with the replacements! at ${DateTime.now().toLocal().toIso8601String()} ========", mode: FileMode.append);
 }
