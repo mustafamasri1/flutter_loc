@@ -79,6 +79,12 @@ List<DartedCommand> commandsTree = [
           defaultValue: 'en',
           describtion:
               'the main language in the app to populate the extracted strings in the corresponding json file.'),
+      DartedArgument(
+          name: 'replacement-suffix',
+          abbreviation: 'rs',
+          isMultiOption: false,
+          describtion:
+              'a suffix to add after the replacement, e.g `.tr()` for using with easy_localization package'),
     ],
     flags: [
       DartedFlag.help,

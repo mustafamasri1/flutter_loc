@@ -29,8 +29,4 @@ class LocMatch {
   @override
   String toString() =>
       'LocMatch(linePosition: $linePosition, lineContent: $lineContent, matchesInLine: $matchesInLine)';
-
-  @override
-  int get hashCode =>
-      linePosition.hashCode ^ lineContent.hashCode ^ matchesInLine.hashCode;
 }

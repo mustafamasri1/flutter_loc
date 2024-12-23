@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 class LocReplacement {
   int linePosition;
   Map<int, (String whatToReplace, String whatToReplaceItWith)> matchesInLine;
@@ -22,9 +21,6 @@ class LocReplacement {
   @override
   String toString() =>
       'LocReplacement(linePosition: $linePosition, matchesInLine: $matchesInLine)';
-
-  @override
-  int get hashCode => linePosition.hashCode ^ matchesInLine.hashCode;
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{

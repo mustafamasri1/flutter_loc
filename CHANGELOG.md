@@ -1,1 +1,2 @@
 - **[0.1.0]** - Initial Release.
+- **[0.1.1]** - Added replacement suffix argument to the replace command.

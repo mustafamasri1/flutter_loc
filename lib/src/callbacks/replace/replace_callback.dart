@@ -11,6 +11,7 @@ import 'replace_content.dart';
 Future<void> replaceCallback(
     Map<String, dynamic>? args, Map<String, bool>? flags) async {
   File flutterLocFile = File(args?['path'] ?? args?['p'] ?? 'flutter_loc.txt');
+  String? replacementSuffix = args?['replacement-suffix'] ?? args?['rs'];
 
   // Make sure i have the required arguments.
   await validateLocFileSupplied(flutterLocFile);
@@ -34,7 +35,8 @@ Future<void> replaceCallback(
   Map<String, String> redefinedMap = {};
   await ConsoleHelper.loadWithTask(
     task: 'Replacing the hard-coded strings with the provided replacements...',
-    process: () async => await replaceFileContent(parsedReplacementMap)
+    process: () async => await replaceFileContent(parsedReplacementMap,
+            replacementSuffix: replacementSuffix)
         .then((v) => redefinedMap = v),
   );
 

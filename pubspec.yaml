@@ -1,6 +1,6 @@
 name: flutter_loc
 description: flutter_loc simplifies localization in Flutter by automating string parsing and offering quick multilingual support.
-version: 0.1.0
+version: 0.1.1
 repository: https://github.com/micazi/flutter_loc
 
 environment:
@@ -8,7 +8,6 @@ environment:
 
 dependencies:
   darted_cli: ^0.1.17
-  analyzer: ^7.1.0
 
 dev_dependencies:
   lints: ^5.1.1

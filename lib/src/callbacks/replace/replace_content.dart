@@ -5,7 +5,7 @@ import '../../models/loc_replacement.model.dart';
 /// Replace the hard-coded strings with the provided l10n keys.
 Future<Map<String, String>> replaceFileContent(
     Map<String, List<LocReplacement>> parsedReplacementMap,
-    {String replacementSuffix = ".tr()"}) async {
+    {String? replacementSuffix}) async {
   Map<String, String> redefinedMap = {};
   // Loop through the replacement file pathes
   await Future.forEach(parsedReplacementMap.entries,
