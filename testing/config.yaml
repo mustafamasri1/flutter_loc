@@ -1,0 +1,108 @@
+# Flutter Localization Tool Configuration File
+# This file is divided into two sections: Extraction and Replacement.
+# Modify these configurations to customize the behavior of the tool.
+# Developed & Maintained by @Micazi
+
+# ====================================================
+# SECTION 1: EXTRACTION CONFIGURATION
+# ====================================================
+extraction:
+  # The directory where the tool should scan for files containing hard-coded strings.
+  # This should be relative to the location of the YAML file. or prefix with `abs:` for absolute path. (e,g abs:C:\some\path\here)
+  # This is REQUIRED and must point to your Flutter app's source code directory.
+  working_directory: .
+
+  # The directory where the tool should output the `flutter_loc` file and the `visit_log` file.
+  # This should be relative to the location of the YAML file. or prefix with `abs:` for absolute path. (e,g abs:C:\some\path\here)
+  # This is OPTIONAL.
+  generation_directory: ./loc_generated
+
+  # List of file extensions to include during the scan.
+  # This is OPTIONAL. Typical usage for Flutter projects is ".dart".
+  include_extensions:
+    - ".dart"
+
+  # List of RegExp patterns for paths to exclude from the extraction process.
+  # Only valid RegExp patterns are supported.
+  exclude_paths:
+    # Example: To exclude all files in the "test" directory, use "^test/.*$".
+    - "test3  .dart" # Exclude everything in the "test" directory
+    - "^test/.*$" # Exclude everything in the "test" directory
+    - "^lib/generated/.*\\.dart$" # Exclude all Dart files in the "lib/generated" folder
+
+  # Whether to overwrite the existing extracted `flutter_loc.txt` file.
+  # This is OPTIONAL. Default is false to avoid accidental overwrites.
+  # Set this to true if you want to force delete and rewrite the file.
+  overwrite: true
+
+  # Whether to generate a `visit_log.txt` file.
+  # This is OPTIONAL. Default is false. When enabled, a log will be created to record all visited files
+  # and the number of matches found in each file during the extraction process.
+  generate_visit_log: true
+
+  # Path to a Dart file containing a custom refinement function for filtering strings.
+  # Needs to be named `custom_refinement_logic.dart` to be excluded from the extraction process.
+  # Get to know how to use the  refinement file in the example folder.
+  # This should be relative to the location of the YAML file. or prefix with `abs:` for absolute path. (e,g abs:C:\some\path\here)
+  # This is OPTIONAL. If provided, the tool will use this function file to refine what gets extracted.
+  custom_refinement_logic_file: ./custom_refinement_logic.dart
+
+  # Configuration for how localization keys should be generated.
+  # This is REQUIRED. Define the format of the keys to make them consistent.
+  key_format:
+    # Whether the tool should automatically generate keys for hard-coded strings.
+    # This is REQUIRED. Set to true to enable key generation or false to disable it.
+    enabled: true
+
+    # Maximum number of words to enable the key generation, You wouldn't want a Lorem Ipsum to have
+    # a separated word by word key, right?
+    # This is OPTIONAL.
+    max_value_length: 2
+
+    # Add a prefix to all generated keys. This is OPTIONAL.
+    # Leave it empty ("") if no prefix is required.
+    prefix: "key_"
+
+    # Add a suffix to all generated keys. This is OPTIONAL.
+    # Leave it empty ("") if no suffix is required.
+    suffix: "_str"
+
+    # Separator to use between parts of the key. This is OPTIONAL.
+    # For example, with "prefix_separator" as "_", keys will look like "key_some_key_str".
+    separator: "_"
+
+# ====================================================
+# SECTION 2: REPLACEMENT CONFIGURATION
+# ====================================================
+replacement:
+  # The directory where the generated localization files will be stored.
+  # This should be relative to the location of the YAML file. or prefix with `abs:` for absolute path. (e,g abs:C:\some\path\here)
+  # This is REQUIRED. Make sure this directory exists or will be created during the tool's execution.
+  output_directory: ./locales
+
+  # Format for the output files. Currently Supported value is only "json", More to come.
+  # This is REQUIRED. Choose the format that aligns with your project needs.
+  output_format: json
+
+  # The default language for your application.
+  # This is REQUIRED. Use a two-letter language code (e.g., "en", "es").
+  default_language: en
+
+  # List of supported languages for localization.
+  # This is REQUIRED. Add all languages your app supports.
+  supported_languages:
+    - en
+    - ar
+    - es
+
+  # Define how the replaced value should be shaped in the code.
+  # This is OPTIONAL. Use "**V**" as a placeholder for the key or value to be inserted.
+  # Examples:
+  # - "before_val_**V**.tr()" -> Produces: before_val_key.tr()
+  # - "tr(**V**)" -> Produces: tr(key)
+  value_shifter: "tr(**V**)"
+# ====================================================
+# NOTES:
+# - Make sure to use valid paths for files (either relative to this config file, or absolute with the `abs:` prefix).
+# - Only add supported languages to the `supported_languages` list.
+# - Customize the `key_format` settings to ensure consistency across your project.

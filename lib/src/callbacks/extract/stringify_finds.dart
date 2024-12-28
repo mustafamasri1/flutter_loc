@@ -1,14 +1,20 @@
 import '../../constants.dart';
 import '../../models/loc_match.model.dart';
+import '../shared/clean_content.dart';
+import '../shared/list_extension.dart';
 
 /// Turn the refined finds into a stringified version with special pattern.
 String stringifyFinds(
   Map<String, List<LocMatch>> finds,
-  bool populatePlaceholders,
-) {
+  bool populatePlaceholders, {
+  int? generatedKeyMaxValue,
+  String? generatedKeyPrefix,
+  String? generatedKeySuffix,
+  String? generatedKeySeparator,
+}) {
   return finds.entries
       .map((entry) => entry.value.isNotEmpty
-          ? "${fileStartDelimeter(entry.key)}\n$pathToMatchesDelimeter\n${entry.value.map((matchValue) => "${matchesToMatchesDelimeter(matchValue.linePosition.toString())}\n${matchValue.matchesInLine.entries.toList().map((mEntry) => "(${mEntry.key}) ${mEntry.value} $contentDelimeter ${populatePlaceholders ? craftPlaceholder(mEntry.value) : '""'} $lineEndDelimeter\n").toList().join('+_+').replaceAll('+_+', '')}").toList().reduceIfNotEmpty((a, b) => "$a\n$b") ?? []}"
+          ? "${fileStartDelimeter(entry.key.replaceAll(' ', '%20'))}\n$pathToMatchesDelimeter\n${entry.value.map((matchValue) => "${matchesToMatchesDelimeter(matchValue.linePosition.toString())}\n${matchValue.matchesInLine.entries.toList().map((mEntry) => "(${mEntry.key}) ${mEntry.value} $contentDelimeter ${populatePlaceholders ? _craftPlaceholder(mEntry.value, generatedKeyMaxValue, generatedKeyPrefix, generatedKeySuffix, generatedKeySeparator) : '""'} $lineEndDelimeter\n").toList().join('+_+').replaceAll('+_+', '')}").toList().reduceIfNotEmpty((a, b) => "$a\n$b") ?? []}"
           : '')
       .toList()
       .map((item) => "$item\n$pathToMatchesDelimeter\n$fileEndDelimeter\n\n")
@@ -18,14 +24,9 @@ String stringifyFinds(
 }
 
 /// Create a placeholder for the original text.
-String craftPlaceholder(String originalText) =>
-    originalText.toLowerCase().replaceAll(' ', '_');
-
-extension ListExtension<E> on List<E>? {
-  /// Check if the list is empty before reducing it.
-  E? reduceIfNotEmpty(E Function(E a, E b) condition) {
-    return this == null || this!.isEmpty
-        ? null
-        : this!.reduce((aa, bb) => condition(aa, bb));
+String _craftPlaceholder(String originalText, int? generatedKeyMaxValue, String? prefix, String? suffix, String? separator) {
+  if (originalText.split(' ').length > (generatedKeyMaxValue ?? 4)) {
+    return '""';
   }
+  return '"' + (prefix ?? '') + cleanContent(originalText).toLowerCase().replaceAll(' ', separator ?? '_') + (suffix ?? '') + '"';
 }
