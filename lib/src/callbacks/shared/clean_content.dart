@@ -11,7 +11,8 @@ String cleanContent(String content) {
     // Ensure the content has matching opening and closing quotes
     if (content.length >= quoteType.length * 2 && content.endsWith(quoteType)) {
       // Step 3: Remove only the matching quotes
-      cleanedContent = content.substring(quoteType.length, content.length - quoteType.length);
+      cleanedContent = content.substring(
+          quoteType.length, content.length - quoteType.length);
     }
   }
   // Step 4: Trim and check for empty content

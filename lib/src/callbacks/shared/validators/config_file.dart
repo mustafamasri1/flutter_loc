@@ -2,7 +2,7 @@ import 'package:darted_cli/console_helper.dart';
 import 'package:darted_cli/io_helper.dart';
 import 'package:darted_cli/yaml_module.dart';
 
-import '../../../../helpers/error_helper.dart';
+import '../../../helpers/error_helper.dart';
 
 /// Validate the config file supplied.
 Future<void> validateConfigFile(String yamlFilePath) async {
@@ -19,7 +19,8 @@ Future<void> validateConfigFile(String yamlFilePath) async {
     // Validate the content of the Yaml file against the schema.
     await YamlModule.validate(yamlContent, schema);
   } catch (e) {
-    ErrorHelper.print('Error in validating the Yaml configuration file supplied.$e');
+    ErrorHelper.print(
+        'Error in validating the Yaml configuration file supplied.$e');
     ConsoleHelper.exit(1);
   }
 }
@@ -37,7 +38,8 @@ final schema = YamlValidationSchema(
         'exclude_paths': FieldRule(type: 'list', required: false),
         'overwrite': FieldRule(type: 'bool', required: false),
         'generate_visit_log': FieldRule(type: 'bool', required: false),
-        'custom_refinement_logic_file': FieldRule(type: 'string', required: false),
+        'custom_refinement_logic_file':
+            FieldRule(type: 'string', required: false),
         'key_format': FieldRule(
           type: 'map',
           required: true,

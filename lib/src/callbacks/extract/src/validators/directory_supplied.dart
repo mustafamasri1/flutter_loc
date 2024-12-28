@@ -1,5 +1,5 @@
 import 'package:darted_cli/console_helper.dart';
-import '../../../helpers/error_helper.dart';
+import '../../../../helpers/error_helper.dart';
 
 /// Validate if the directory argument was supplied.
 void validateDirectorySupplied(Map<String, dynamic>? args) {

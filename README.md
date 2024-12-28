@@ -150,6 +150,7 @@ flutter_loc is built with developers in mind, providing:
 
 - [x] Automatic key extraction from Dart code.
 - [x] JSON-based localization file support.
+- [x] Advanced extraction, refinement, and replacement configurations with a YAML file.
 - [ ] Support for variables extraction and substitution.
 - [ ] ARB & YAML support for localization.
 - [ ] Automatic translation of the hard-coded strings using one of the translation methods.

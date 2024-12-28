@@ -8,12 +8,12 @@
 # ====================================================
 extraction:
   # The directory where the tool should scan for files containing hard-coded strings.
-  # This should be relative to the location of the YAML file. or prefix with `abs:` for absolute path. (e,g abs:C:\some\path\here)
+  # This should be relative to the location of the YAML file.
   # This is REQUIRED and must point to your Flutter app's source code directory.
   working_directory: ./directory-to-search-in
 
   # The directory where the tool should output the `flutter_loc` file and the `visit_log` file.
-  # This should be relative to the location of the YAML file. or prefix with `abs:` for absolute path. (e,g abs:C:\some\path\here)
+  # This should be relative to the location of the YAML file.
   # This is OPTIONAL.
   generation_directory: ./directory-to-gen-in
 
@@ -42,7 +42,7 @@ extraction:
   # Path to a Dart file containing a custom refinement function for filtering strings.
   # Needs to be named `custom_refinement_logic.dart` to be excluded from the extraction process.
   # Get to know how to use the  refinement file in the example folder.
-  # This should be relative to the location of the YAML file. or prefix with `abs:` for absolute path. (e,g abs:C:\some\path\here)
+  # This should be relative to the location of the YAML file.
   # This is OPTIONAL. If provided, the tool will use this function file to refine what gets extracted.
   custom_refinement_logic_file: ./ref-files/custom_refinement_logic.dart
 
@@ -75,7 +75,7 @@ extraction:
 # ====================================================
 replacement:
   # The directory where the generated localization files will be stored.
-  # This should be relative to the location of the YAML file. or prefix with `abs:` for absolute path. (e,g abs:C:\some\path\here)
+  # This should be relative to the location of the YAML file.
   # This is REQUIRED. Make sure this directory exists or will be created during the tool's execution.
   output_directory: ./locales
 

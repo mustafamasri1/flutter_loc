@@ -1,6 +1,6 @@
 import 'package:darted_cli/console_helper.dart';
 import 'package:darted_cli/io_helper.dart';
-import '../../../helpers/error_helper.dart';
+import '../../../../helpers/error_helper.dart';
 
 /// Validate that a loc file was supplied.
 Future<void> validateLocFileSupplied(File file) async {

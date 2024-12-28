@@ -1,6 +1,5 @@
 import 'package:darted_cli/console_helper.dart';
 import 'package:darted_cli/io_helper.dart';
-
 import '../../helpers/error_helper.dart';
 
 Future<T> temporaryDirectoryChange<T>(
@@ -15,7 +14,8 @@ Future<T> temporaryDirectoryChange<T>(
       if (generateIfDoesntExist) {
         await IOHelper.directory.create(theDoingDirectoryPath);
       } else {
-        ErrorHelper.print("The directory $theDoingDirectoryPath' doesn't exist.");
+        ErrorHelper.print(
+            "The directory $theDoingDirectoryPath' doesn't exist.");
         ConsoleHelper.exit(1);
       }
     }

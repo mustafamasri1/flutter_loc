@@ -1,10 +1,11 @@
 import 'package:darted_cli/console_helper.dart';
 import 'package:darted_cli/io_helper.dart';
 
-import '../../../../helpers/error_helper.dart';
+import '../../../helpers/error_helper.dart';
 
 /// Validate the working directory pathes in the config file supplied.
-Future<void> validateConfigFilePathes(Map<String, dynamic> extractedData, {List<String>? filesToCheck, List<String>? dirsToCheck}) async {
+Future<void> validateConfigFilePathes(Map<String, dynamic> extractedData,
+    {List<String>? filesToCheck, List<String>? dirsToCheck}) async {
   // Get the available working pathes in the Yaml file.
   List<String> workingFiles = filesToCheck ?? [];
 
