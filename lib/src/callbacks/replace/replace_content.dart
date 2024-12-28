@@ -1,6 +1,7 @@
 import 'package:darted_cli/io_helper.dart';
 
 import '../../models/loc_replacement.model.dart';
+import '../shared/clear_path_trails.dart';
 
 /// Replace the hard-coded strings with the provided l10n keys.
 Future<Map<String, String>> replaceFileContent(Map<String, List<LocReplacement>> parsedReplacementMap, {String? valueShifter}) async {
@@ -8,7 +9,7 @@ Future<Map<String, String>> replaceFileContent(Map<String, List<LocReplacement>>
   // Loop through the replacement file pathes
   await Future.forEach(parsedReplacementMap.entries, (parsedReplacementFileEntry) async {
     // Open the file's path
-    final File file = File(parsedReplacementFileEntry.key);
+    final File file = File.fromUri(Uri(path: parsedReplacementFileEntry.key.clearPathTrails));
     final String fileContent = await file.readAsString();
 
     // Create a mutable copy of the file content

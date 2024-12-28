@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:darted_cli/console_helper.dart';
+import 'package:darted_cli/io_helper.dart';
 import 'package:darted_cli/yaml_module.dart';
 import '../../helpers/error_helper.dart';
 import '../extract/temporary_directory_change.dart';
@@ -44,7 +45,8 @@ Future<void> replaceCallback(Map<String, dynamic>? args, Map<String, bool>? flag
     // Validate pathes in the extracted data
     await ConsoleHelper.loadWithTask(
       task: 'Validating the working pathes in the provided config file...',
-      process: () => temporaryDirectoryChange<void>(File(configFilePath!).parent.path, () => validateConfigFilePathes(extractedData)),
+      process: () =>
+          temporaryDirectoryChange<void>(File(configFilePath!).parent.path, () => validateConfigFilePathes(extractedData, dirsToCheck: [extractedData['extraction']['generation_directory']])),
     );
 
     // Get the required arguments/data
@@ -70,17 +72,20 @@ Future<void> replaceCallback(Map<String, dynamic>? args, Map<String, bool>? flag
   }
 
   // Get the loc file & prepate the directory...
-  print('gen dir: $generationDirectoryArg');
-  File flutterLocFile = File(generationDirectoryArg + Platform.pathSeparator + 'flutter_loc.txt');
-  await validateLocFileSupplied(flutterLocFile);
-  Directory outputDirectory = Directory(outputDirectoryArg ?? flutterLocFile.parent.path);
-
-  // Get the content of the file...
+  late Directory outputDirectory;
   String fileData = '';
-  await ConsoleHelper.loadWithTask(
-    task: 'Reading flutter_loc file...',
-    process: () => flutterLocFile.readAsString().then((v) => fileData = v),
-  );
+  File flutterLocFile = File((generationDirectoryArg + Platform.pathSeparator + 'flutter_loc.txt').replaceSeparator());
+  await temporaryDirectoryChange<void>(configFilePath != null ? File(configFilePath).parent.path : null, () async {
+    // Validate the loc file supplied...
+    await validateLocFileSupplied(flutterLocFile);
+    outputDirectory = Directory(outputDirectoryArg ?? flutterLocFile.parent.path);
+
+    // Get the content of the file...
+    await ConsoleHelper.loadWithTask(
+      task: 'Reading flutter_loc file...',
+      process: () => flutterLocFile.readAsString().then((v) => fileData = v),
+    );
+  });
 
   // Parse the file data to a map.
   Map<String, List<LocReplacement>> parsedReplacementMap = {};
@@ -99,11 +104,14 @@ Future<void> replaceCallback(Map<String, dynamic>? args, Map<String, bool>? flag
   // Generate the l10n files
   await ConsoleHelper.loadWithTask(
     task: 'Generating l10n files...',
-    process: () async => await generateLangFiles(outputDirectory.path, redefinedMap, langsSupported, defLanguage),
+    process: () async => temporaryDirectoryChange(
+        configFilePath != null ? File(configFilePath).parent.path : null, () async => await generateLangFiles(outputDirectory.path, redefinedMap, langsSupported, defLanguage, 'json')),
   );
 
   // Mark the loc file as generated.
-  await flutterLocFile.writeAsString("\n\n\n======== DONE with the replacements! at ${DateTime.now().toLocal().toIso8601String()} ========", mode: FileMode.append);
+  temporaryDirectoryChange<void>(configFilePath != null ? File(configFilePath).parent.path : null, () async {
+    await flutterLocFile.writeAsString("\n\n\n======== DONE with the replacements! at ${DateTime.now().toLocal().toIso8601String()} ========", mode: FileMode.append);
+  });
 
   ConsoleHelper.write('Done with the replacements!'.withColor(ConsoleColor.green), newLine: true);
   ConsoleHelper.exit(0);

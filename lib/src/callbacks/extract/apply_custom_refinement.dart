@@ -19,7 +19,7 @@ class RefinementIsolate {
     try {
       // Spawn the isolate once.
       _isolate = await Isolate.spawnUri(
-        Uri(path: customLogicPath),
+        Uri.file(customLogicPath),
         [],
         _receivePort.sendPort,
         onError: errorPort.sendPort,

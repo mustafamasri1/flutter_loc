@@ -1,6 +1,7 @@
 import 'package:darted_cli/console_helper.dart';
 import 'package:darted_cli/io_helper.dart';
 import 'package:darted_cli/yaml_module.dart';
+import '../shared/clear_path_trails.dart';
 import 'find_hardcoded_strings.dart';
 import 'generate_output.dart';
 import 'generate_visit_log.dart';
@@ -55,7 +56,17 @@ Future<void> extractCallback(Map<String, dynamic>? args, Map<String, bool>? flag
     // Validate pathes in the extracted data
     await ConsoleHelper.loadWithTask(
       task: 'Validating the working pathes in the provided config file...',
-      process: () => temporaryDirectoryChange<void>(File(configFilePath!).parent.path, () => validateConfigFilePathes(extractedData)),
+      process: () => temporaryDirectoryChange<void>(
+          File(configFilePath!).parent.path,
+          () => validateConfigFilePathes(
+                extractedData,
+                filesToCheck: [
+                  extractedData['extraction']['custom_refinement_logic_file'],
+                ],
+                dirsToCheck: [
+                  extractedData['extraction']['working_directory'],
+                ],
+              )),
     );
 
     // Get the required arguments/data
@@ -89,7 +100,9 @@ Future<void> extractCallback(Map<String, dynamic>? args, Map<String, bool>? flag
 
   // Define the directories
   Directory sourceDirectory = configFilePath != null ? Directory(File(configFilePath).parent.path + Platform.pathSeparator + sourceDirectoryArg) : Directory(sourceDirectoryArg);
-  Directory? outputDirectory = generationDirectoryArg != null ? Directory(generationDirectoryArg) : null;
+  Directory? outputDirectory = generationDirectoryArg != null
+      ? (configFilePath != null ? Directory(File(configFilePath).parent.path + Platform.pathSeparator + generationDirectoryArg) : Directory(generationDirectoryArg))
+      : null;
 
   // Finds
   Map<String, List<LocMatch>> finds = {};
@@ -115,20 +128,16 @@ Future<void> extractCallback(Map<String, dynamic>? args, Map<String, bool>? flag
     // Generate the visit log.
     await ConsoleHelper.loadWithTask(
         task: 'Generating the visit log...',
-        process: () => temporaryDirectoryChange(
-              configFilePath != null ? File(configFilePath).parent.path : null,
-              () async => await generateVisitLog(
-                configFilePath != null ? '.' : sourceDirectory.path,
-                finds,
-                outputDirectory?.path ?? '.',
-                extensionsToInclude: includedExtensions,
-                filesToExclude: excludedPathes?.map((item) => RegExp(item)).toList(),
-              ),
+        process: () => generateVisitLog(
+              sourceDirectory.path,
+              finds,
+              outputDirectory?.path ?? '.',
+              extensionsToInclude: includedExtensions,
+              filesToExclude: excludedPathes?.map((item) => RegExp(item)).toList(),
             ));
   }
 
   // Combine the refined data into a string...
-
   String stringifiedFinds = stringifyFinds(
     finds,
     isKeyGenerationEnabled,
@@ -140,15 +149,13 @@ Future<void> extractCallback(Map<String, dynamic>? args, Map<String, bool>? flag
 
   // Export the refined data to an external file...
   await ConsoleHelper.loadWithTask(
-      task: 'Generating the flutter_loc file...',
-      process: () async => temporaryDirectoryChange(
-            configFilePath != null ? File(configFilePath).parent.path : null,
-            () async => await generateOutput(stringifiedFinds, outputDirectory?.path ?? '.', isOverwrite),
-          ));
+    task: 'Generating the flutter_loc file...',
+    process: () async => generateOutput(stringifiedFinds, outputDirectory?.path ?? '.', isOverwrite),
+  );
   ConsoleHelper.write('Done with the extraction!'.withColor(ConsoleColor.green), newLine: true);
-  await temporaryDirectoryChange(configFilePath != null ? File(configFilePath).parent.path : null, () async {
-    ConsoleHelper.write('You will find the generated files in ' + '${outputDirectory?.absolute.path ?? Directory(IOHelper.directory.getCurrent()).absolute.path}'.withColor(ConsoleColor.magenta),
-        newLine: true);
-  });
+  ConsoleHelper.write(
+      'You will find the generated loc file at ' + '${outputDirectory?.absolute.path ?? Directory('.').absolute.path}${Platform.pathSeparator}flutter_loc.txt'.withColor(ConsoleColor.magenta),
+      newLine: true);
+  ;
   ConsoleHelper.exit(0);
 }

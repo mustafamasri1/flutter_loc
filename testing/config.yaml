@@ -10,12 +10,12 @@ extraction:
   # The directory where the tool should scan for files containing hard-coded strings.
   # This should be relative to the location of the YAML file. or prefix with `abs:` for absolute path. (e,g abs:C:\some\path\here)
   # This is REQUIRED and must point to your Flutter app's source code directory.
-  working_directory: .
+  working_directory: ./directory-to-search-in
 
   # The directory where the tool should output the `flutter_loc` file and the `visit_log` file.
   # This should be relative to the location of the YAML file. or prefix with `abs:` for absolute path. (e,g abs:C:\some\path\here)
   # This is OPTIONAL.
-  generation_directory: ./loc_generated
+  generation_directory: ./directory-to-gen-in
 
   # List of file extensions to include during the scan.
   # This is OPTIONAL. Typical usage for Flutter projects is ".dart".
@@ -26,7 +26,6 @@ extraction:
   # Only valid RegExp patterns are supported.
   exclude_paths:
     # Example: To exclude all files in the "test" directory, use "^test/.*$".
-    - "test3  .dart" # Exclude everything in the "test" directory
     - "^test/.*$" # Exclude everything in the "test" directory
     - "^lib/generated/.*\\.dart$" # Exclude all Dart files in the "lib/generated" folder
 
@@ -45,7 +44,7 @@ extraction:
   # Get to know how to use the  refinement file in the example folder.
   # This should be relative to the location of the YAML file. or prefix with `abs:` for absolute path. (e,g abs:C:\some\path\here)
   # This is OPTIONAL. If provided, the tool will use this function file to refine what gets extracted.
-  custom_refinement_logic_file: ./custom_refinement_logic.dart
+  custom_refinement_logic_file: ./ref-files/custom_refinement_logic.dart
 
   # Configuration for how localization keys should be generated.
   # This is REQUIRED. Define the format of the keys to make them consistent.
@@ -57,7 +56,7 @@ extraction:
     # Maximum number of words to enable the key generation, You wouldn't want a Lorem Ipsum to have
     # a separated word by word key, right?
     # This is OPTIONAL.
-    max_value_length: 2
+    max_value_length: 3
 
     # Add a prefix to all generated keys. This is OPTIONAL.
     # Leave it empty ("") if no prefix is required.

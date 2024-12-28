@@ -6,13 +6,17 @@ Future<Map<String, List<LocMatch>>> findHardcodedStrings({List<RegExp>? filesToE
   Map<String, List<LocMatch>> ret = {};
   String currentWD = IOHelper.directory.getCurrent();
   // Break down the RegExp into smaller, more manageable parts
-  final String tripleDoubleQuoted = r'"""[^"]*(?:"[^"]*)*"""'; // Triple double-quoted strings
-  final String tripleSingleQuoted = r"'''[^']*(?:'[^']*)*'''"; // Triple single-quoted strings
+  final String tripleDoubleQuoted = r'"""(?:(?!""")[\s\S])*?"""'; // Non-greedy triple double-quoted strings
+  final String tripleSingleQuoted = r"'''(?:(?!''')[\s\S])*?'''"; // Non-greedy triple single-quoted strings
   final String doubleQuoted = r'"[^"\\\r\n]*(?:\\.[^"\\\r\n]*)*"'; // Double-quoted strings
   final String singleQuoted = r"'[^'\\\r\n]*(?:\\.[^'\\\r\n]*)*'"; // Single-quoted strings
 
-  // Combine patterns with alternation
-  final RegExp stringPattern = RegExp('$tripleDoubleQuoted|$tripleSingleQuoted|$doubleQuoted|$singleQuoted', multiLine: true, dotAll: true);
+// Combine patterns with alternation
+  final RegExp stringPattern = RegExp(
+    '$tripleDoubleQuoted|$tripleSingleQuoted|$doubleQuoted|$singleQuoted',
+    multiLine: true,
+    dotAll: true,
+  );
 
   // Search the directory for the hard-coded strings (Strings include their quotation marks!)
   Map<String, List<(int, String, Map<int, String>)>> searchResult = await IOHelper.file.search(
@@ -32,9 +36,7 @@ Future<Map<String, List<LocMatch>>> findHardcodedStrings({List<RegExp>? filesToE
     ],
   );
   // Convert the matches to a map of <File path, LocMatch>
-  ret = Map.fromEntries(searchResult.entries.map((entry) => MapEntry(
-      Directory(entry.key).absolute.path, // relative to the current working directory (Source Directory)
-      //TODO: [Need to divert to the generation path]
-      entry.value.map((v) => LocMatch(linePosition: v.$1, lineContent: v.$2, matchesInLine: v.$3)).toList())));
+  ret = Map.fromEntries(searchResult.entries
+      .map((entry) => MapEntry(Uri.directory(Directory(entry.key).absolute.path).path, entry.value.map((v) => LocMatch(linePosition: v.$1, lineContent: v.$2, matchesInLine: v.$3)).toList())));
   return ret;
 }

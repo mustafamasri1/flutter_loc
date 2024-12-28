@@ -28,5 +28,5 @@ String _craftPlaceholder(String originalText, int? generatedKeyMaxValue, String?
   if (originalText.split(' ').length > (generatedKeyMaxValue ?? 4)) {
     return '""';
   }
-  return '"' + (prefix ?? '') + cleanContent(originalText).toLowerCase().replaceAll(' ', separator ?? '_') + (suffix ?? '') + '"';
+  return '"' + (prefix ?? '') + cleanContent(originalText).toLowerCase().replaceAll('"', "'").replaceAll(' ', separator ?? '_') + (suffix ?? '') + '"';
 }
