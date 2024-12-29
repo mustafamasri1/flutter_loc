@@ -18,16 +18,27 @@ String stringifyFinds(
           ? "${fileStartDelimeter(entry.key.clearPathTrails.replaceAll(' ', '%20')).clearPathTrails}\n$pathToMatchesDelimeter\n${entry.value.map((matchValue) => "${matchesToMatchesDelimeter(matchValue.linePosition.toString())}\n${matchValue.matchesInLine.entries.toList().map((mEntry) => "(${mEntry.key}) ${mEntry.value} $contentDelimeter ${populatePlaceholders ? _craftPlaceholder(mEntry.value, generatedKeyMaxValue, generatedKeyPrefix, generatedKeySuffix, generatedKeySeparator) : '""'} $lineEndDelimeter\n").toList().join('+_+').replaceAll('+_+', '')}").toList().reduceIfNotEmpty((a, b) => "$a\n$b") ?? []}"
           : '')
       .toList()
-      .map((item) => item.isEmpty ? '' : "$item\n$pathToMatchesDelimeter\n$fileEndDelimeter\n\n")
+      .map((item) => item.isEmpty
+          ? ''
+          : "$item\n$pathToMatchesDelimeter\n$fileEndDelimeter\n\n")
       .toList()
       .join('+_+')
       .replaceAll('+_+', '');
 }
 
 /// Create a placeholder for the original text.
-String _craftPlaceholder(String originalText, int? generatedKeyMaxValue, String? prefix, String? suffix, String? separator) {
+String _craftPlaceholder(String originalText, int? generatedKeyMaxValue,
+    String? prefix, String? suffix, String? separator) {
   if (originalText.split(' ').length > (generatedKeyMaxValue ?? 4)) {
     return '""';
   }
-  return '"' + (prefix ?? '') + cleanContent(originalText).toLowerCase().replaceAll('\n', ' ').replaceAll('"', "'").replaceAll(' ', separator ?? '_') + (suffix ?? '') + '"';
+  return '"' +
+      (prefix ?? '') +
+      cleanContent(originalText)
+          .toLowerCase()
+          .replaceAll('\n', ' ')
+          .replaceAll('"', "'")
+          .replaceAll(' ', separator ?? '_') +
+      (suffix ?? '') +
+      '"';
 }

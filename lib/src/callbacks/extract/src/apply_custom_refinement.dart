@@ -8,7 +8,8 @@ class RefinementIsolate {
   late SendPort _sendPort;
   final ReceivePort _receivePort = ReceivePort();
   final Completer<void> _readyCompleter = Completer<void>();
-  final StreamController<bool> _resultsController = StreamController<bool>.broadcast();
+  final StreamController<bool> _resultsController =
+      StreamController<bool>.broadcast();
 
   RefinementIsolate(String customLogicPath) {
     _initialize(customLogicPath);
