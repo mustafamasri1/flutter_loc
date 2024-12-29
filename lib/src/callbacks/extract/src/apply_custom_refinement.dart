@@ -8,8 +8,7 @@ class RefinementIsolate {
   late SendPort _sendPort;
   final ReceivePort _receivePort = ReceivePort();
   final Completer<void> _readyCompleter = Completer<void>();
-  final StreamController<bool> _resultsController =
-      StreamController<bool>.broadcast();
+  final StreamController<bool> _resultsController = StreamController<bool>.broadcast();
 
   RefinementIsolate(String customLogicPath) {
     _initialize(customLogicPath);
@@ -72,64 +71,3 @@ class RefinementIsolate {
     _resultsController.close();
   }
 }
-
-// Future<bool> applyCustomRefinementImpl(
-//   String filePath,
-//   String lineContent,
-//   String matchedString,
-//   //
-//   String? customLogicPath,
-// ) async {
-//   print("Doing refinement on: $matchedString");
-//   if (customLogicPath == null) {
-//     // Default behavior: Extract everything.
-//     return true;
-//   }
-
-//   final receivePort = ReceivePort();
-//   final errorPort = ReceivePort();
-
-//   try {
-//     // Spawn the isolate.
-//     final isolate = await Isolate.spawnUri(
-//       Uri(path: ),
-//       [], // Pass the main isolate's SendPort.
-//       receivePort.sendPort,
-//       onError: errorPort.sendPort,
-//     );
-
-//     final resultCompleter = Completer<bool>();
-
-//     // Listen for messages from the spawned isolate.
-//     late SendPort isolateSendPort;
-//     final subscription = receivePort.listen((message) {
-//       if (message is SendPort) {
-//         // The spawned isolate sends back its SendPort.
-//         isolateSendPort = message;
-//         // Send the input data to the isolate.
-//         isolateSendPort.send({
-//           'filePath': filePath,
-//           'lineContent': lineContent,
-//           'matchedString': matchedString,
-//         });
-//       } else if (message is bool) {
-//         // The spawned isolate sends back the result.
-//         resultCompleter.complete(message);
-//       }
-//     });
-
-//     errorPort.listen((error) {
-//       resultCompleter.completeError(error);
-//       isolate.kill(priority: Isolate.immediate);
-//     });
-
-//     return await resultCompleter.future.whenComplete(() {
-//       subscription.cancel();
-//       receivePort.close();
-//       errorPort.close();
-//     });
-//   } catch (e) {
-//     // Handle errors in spawning or communication.
-//     return Future.error(e);
-//   }
-// }
