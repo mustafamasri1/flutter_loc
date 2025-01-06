@@ -4,3 +4,4 @@
 - **[0.2.1]** - Fixes within the stringification.
 - **[0.2.2]** - Fixes within the stringification.
 - **[0.2.2]** - [FIX] Remove special characters from extractions and from key population.
+- **[0.2.3]** - [DEPS] Updated the `darted_cli` dependency.
