@@ -2,3 +2,5 @@
 - **[0.1.1]** - Added replacement suffix argument to the replace command.
 - **[0.2.0]** - **BIG UPDATE**: Added config file to add advanced functionality to both the extraction and the replacement phases. See everything in the example folder.
 - **[0.2.1]** - Fixes within the stringification.
+- **[0.2.2]** - Fixes within the stringification.
+- **[0.2.2]** - [FIX] Remove special characters from extractions and from key population.

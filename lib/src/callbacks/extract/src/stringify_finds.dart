@@ -32,13 +32,18 @@ String _craftPlaceholder(String originalText, int? generatedKeyMaxValue,
   if (originalText.split(' ').length > (generatedKeyMaxValue ?? 4)) {
     return '""';
   }
-  return '"' +
-      (prefix ?? '') +
-      cleanContent(originalText)
-          .toLowerCase()
-          .replaceAll('\n', ' ')
-          .replaceAll('"', "'")
-          .replaceAll(' ', separator ?? '_') +
-      (suffix ?? '') +
-      '"';
+
+  String updatedKey = cleanContent(originalText)
+      .toLowerCase()
+      .replaceAll('\n', ' ')
+      .replaceAll('"', "'")
+      .replaceAll(RegExp(r'[{}\[\]()!?@:;.,#$\^&*\-_+=]'), '')
+      .replaceAll("'", '');
+
+  return ('"' +
+          (prefix ?? '') +
+          updatedKey.replaceAll('\\n', '_').replaceAll(' ', separator ?? '_') +
+          (suffix ?? '') +
+          '"')
+      .replaceAll(RegExp(r'' + (separator ?? '_') + r'+'), (separator ?? '_'));
 }

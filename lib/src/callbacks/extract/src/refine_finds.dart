@@ -42,7 +42,13 @@ Future<Map<String, List<LocMatch>>> refineFinds(
               mapEntry.value == "''" ||
               mapEntry.value == '""';
 
-          //2. Apply custom refinement logic.
+          //2. Remove Special-only strings
+          final RegExp specialCharAndNumbersOnly = RegExp(
+              r'''^["\']{1,3}\s*[0-9{}[\]():;!@#$%^&*+=\-.,<>?/\\|~`\s]*\s*["\']{1,3}$''');
+          bool isSpecialOrNumbersOnly =
+              specialCharAndNumbersOnly.hasMatch(mapEntry.value.trim());
+
+          //3. Apply custom refinement logic.
           bool failsCustomRefinement = false;
           if (refinementIsolate != null) {
             failsCustomRefinement =
@@ -53,7 +59,7 @@ Future<Map<String, List<LocMatch>>> refineFinds(
             );
           }
 
-          if (!isEmpty && !failsCustomRefinement) {
+          if (!isEmpty && !isSpecialOrNumbersOnly && !failsCustomRefinement) {
             newM.addEntries([mapEntry]);
           }
         });
