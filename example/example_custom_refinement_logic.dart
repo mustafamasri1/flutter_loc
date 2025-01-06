@@ -34,6 +34,10 @@ bool refineExtraction(
   // Example: Skip specific lines.
   if (lineContent.startsWith('import')) return false;
 
+  // Example: Skip prints & debugPrints.
+  if (lineContent.contains("print($matchedString)") ||
+      lineContent.contains("debugPrint($matchedString)")) return false;
+
   // Otherwise, extract the string.
   return true;
 }

@@ -16,6 +16,7 @@ Future<void> replaceCallback(
   String? outputDirectoryArg;
   //
   String? valueShifter;
+  String? importingLine;
   String? outputFormat;
   String defLanguage;
   List<String> langsSupported;
@@ -38,16 +39,6 @@ Future<void> replaceCallback(
           .then((v) => extractedData = v),
     );
 
-    // Validate pathes in the extracted data
-    await ConsoleHelper.loadWithTask(
-      task: 'Validating the working pathes in the provided config file...',
-      process: () => temporaryDirectoryChange<void>(
-          File(configFilePath!).parent.path,
-          () => validateConfigFilePathes(extractedData, dirsToCheck: [
-                extractedData['extraction']['generation_directory']
-              ])),
-    );
-
     // Get the required arguments/data
     generationDirectoryArg =
         extractedData['extraction']['generation_directory'];
@@ -61,6 +52,7 @@ Future<void> replaceCallback(
                 .toList() ??
             ['en'];
     valueShifter = extractedData['replacement']['value_shifter'];
+    importingLine = extractedData['replacement']['importing_line'];
   } else {
     // Parse the arguments i need.
     generationDirectoryArg = (args['path'] ?? args['p']) != null
@@ -121,7 +113,7 @@ Future<void> replaceCallback(
   await ConsoleHelper.loadWithTask(
     task: 'Replacing the hard-coded strings with the provided replacements...',
     process: () async => await replaceFileContent(parsedReplacementMap,
-            valueShifter: valueShifter)
+            valueShifter: valueShifter, importingLine: importingLine)
         .then((v) => redefinedMap = v),
   );
 

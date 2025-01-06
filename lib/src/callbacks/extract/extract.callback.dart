@@ -47,22 +47,6 @@ Future<void> extractCallback(
           .then((v) => extractedData = v),
     );
 
-    // Validate pathes in the extracted data
-    await ConsoleHelper.loadWithTask(
-      task: 'Validating the working pathes in the provided config file...',
-      process: () => temporaryDirectoryChange<void>(
-          File(configFilePath!).parent.path,
-          () => validateConfigFilePathes(
-                extractedData,
-                filesToCheck: [
-                  extractedData['extraction']['custom_refinement_logic_file'],
-                ],
-                dirsToCheck: [
-                  extractedData['extraction']['working_directory'],
-                ],
-              )),
-    );
-
     // Get the required arguments/data
     sourceDirectoryArg = extractedData['extraction']['working_directory'];
     generationDirectoryArg =

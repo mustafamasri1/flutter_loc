@@ -100,6 +100,10 @@ replacement:
   # - "before_val_**V**.tr()" -> Produces: before_val_key.tr()
   # - "tr(**V**)" -> Produces: tr(key)
   value_shifter: "tr(**V**)"
+
+  # Adds an import line to the top of all files where replacements occur.
+  # This is OPTIONAL. If provided, the import line will be added.
+  importing_line: "import 'package:flutter_localizations/flutter_localizations.dart';"
 # ====================================================
 # NOTES:
 # - Make sure to use valid paths for files (either relative to this config file, or absolute with the `abs:` prefix).

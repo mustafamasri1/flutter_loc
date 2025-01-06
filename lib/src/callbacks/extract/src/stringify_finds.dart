@@ -37,7 +37,7 @@ String _craftPlaceholder(String originalText, int? generatedKeyMaxValue,
       .toLowerCase()
       .replaceAll('\n', ' ')
       .replaceAll('"', "'")
-      .replaceAll(RegExp(r'[{}\[\]()!?@:;.,#$\^&*\-_+=]'), '')
+      .replaceAll(RegExp(r'[{}\[\]()!?@:;.,#$\^&*\-_+=\\]'), '')
       .replaceAll("'", '');
 
   return ('"' +

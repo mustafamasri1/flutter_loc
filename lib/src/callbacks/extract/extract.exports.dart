@@ -2,7 +2,6 @@
 export 'src/validators/directory_supplied.dart';
 // Shared Validators
 export '../shared/validators/config_file.dart';
-export '../shared/validators/config_file_pathes.dart';
 export '../shared/validators/regex_pattern.dart';
 // Extract Only Functions
 export 'src/find_hardcoded_strings.dart';

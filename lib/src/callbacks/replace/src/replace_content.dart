@@ -7,7 +7,8 @@ import '../../shared/clear_path_trails.dart';
 /// Replace the hard-coded strings with the provided l10n keys.
 Future<Map<String, String>> replaceFileContent(
     Map<String, List<LocReplacement>> parsedReplacementMap,
-    {String? valueShifter}) async {
+    {String? valueShifter,
+    String? importingLine}) async {
   Map<String, String> redefinedMap = {};
   // Loop through the replacement file pathes
   await Future.forEach(parsedReplacementMap.entries,
@@ -46,7 +47,8 @@ Future<Map<String, String>> replaceFileContent(
 
       // Update the file.
       if (fileContent != newFileContent) {
-        await file.writeAsString(newFileContent);
+        await file.writeAsString(
+            (importingLine != null ? "$importingLine\n" : '') + newFileContent);
       }
     });
   });

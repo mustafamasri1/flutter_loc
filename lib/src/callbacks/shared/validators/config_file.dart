@@ -67,6 +67,8 @@ final schema = YamlValidationSchema(
         'output_directory':
             FieldRule(type: YamlValueType.directoryPath, required: true),
         'output_format': FieldRule(type: YamlValueType.string, required: true),
+        'importing_line':
+            FieldRule(type: YamlValueType.string, required: false),
         'default_language':
             FieldRule(type: YamlValueType.string, required: true),
         'supported_languages':
