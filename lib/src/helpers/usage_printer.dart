@@ -1,7 +1,7 @@
 import 'package:darted_cli/console_helper.dart';
 import 'package:darted_cli/darted_cli.dart';
 
-/// Print the usage (help) describtion.
+/// Print the usage (help) description.
 String commandsUsagePrinter(DartedCommand command) {
   String helpDescription =
       "${command.name.withColor(ConsoleColor.cyan)} :- ${command.helperDescription}";
@@ -11,7 +11,7 @@ String commandsUsagePrinter(DartedCommand command) {
   Map<String, String> argsList = Map.fromEntries(command.arguments
           ?.map((a) => MapEntry(
               "--${a?.name},-${a?.abbreviation} [default: ${a?.defaultValue ?? 'N/A'}]",
-              a?.describtion?.withColor(ConsoleColor.grey) ?? ''))
+              a?.description?.withColor(ConsoleColor.grey) ?? ''))
           .toList() ??
       []);
   String justifiedArgs = (command.arguments?.isNotEmpty ?? false)
@@ -22,7 +22,7 @@ String commandsUsagePrinter(DartedCommand command) {
   Map<String, String> flagList = Map.fromEntries(command.flags
           ?.map((f) => MapEntry(
               "--${f.name},-${f.abbreviation}${f.canBeNegated ? '  (Negatable)'.withColor(ConsoleColor.magenta) : ''}${f.appliedByDefault ? '  (Defaultly applied)' : ''}",
-              f.describtion?.withColor(ConsoleColor.grey) ?? ''))
+              f.description?.withColor(ConsoleColor.grey) ?? ''))
           .toList() ??
       []);
   String justifiedFlags = (command.flags?.isNotEmpty ?? false)

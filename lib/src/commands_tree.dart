@@ -12,19 +12,19 @@ List<DartedCommand> commandsTree = [
           abbreviation: 'd',
           isMultiOption: false,
           defaultValue: 'lib',
-          describtion: 'choose the directory to search in.'),
+          description: 'choose the directory to search in.'),
       DartedArgument(
           name: 'output',
           abbreviation: 'o',
           isMultiOption: false,
           defaultValue: '.',
-          describtion:
+          description:
               'choose the output directory for the generated extraction files.'),
       DartedArgument(
           name: 'config',
           abbreviation: 'f',
           isMultiOption: false,
-          describtion:
+          description:
               'configure the process for advanced refinements with a config yaml file.'),
     ],
     flags: [
@@ -34,20 +34,20 @@ List<DartedCommand> commandsTree = [
           abbreviation: 'ow',
           canBeNegated: false,
           appliedByDefault: false,
-          describtion: 'overwrite the current flutter_loc file.'),
+          description: 'overwrite the current flutter_loc file.'),
       DartedFlag(
           name: 'populate',
           abbreviation: 'pop',
           canBeNegated: false,
           appliedByDefault: false,
-          describtion:
+          description:
               'populate the placeholders in the extracted file with the template: `text1_text2`.'),
       DartedFlag(
           name: 'log',
           abbreviation: 'l',
           canBeNegated: false,
           appliedByDefault: true,
-          describtion: 'generate a log file `visit_log.txt`.'),
+          description: 'generate a log file `visit_log.txt`.'),
     ],
     callback: (args, flags) async => await extractCallback(args, flags),
   ),
@@ -62,26 +62,26 @@ List<DartedCommand> commandsTree = [
           abbreviation: 'p',
           isMultiOption: false,
           defaultValue: 'flutter_loc.txt',
-          describtion: 'path to the `flutter_loc.txt` file.'),
+          description: 'path to the `flutter_loc.txt` file.'),
       DartedArgument(
           name: 'languages',
           abbreviation: 'l',
           isMultiOption: false,
           defaultValue: 'en',
           optionsSeparator: ',',
-          describtion: 'languages to generate the output files for.'),
+          description: 'languages to generate the output files for.'),
       DartedArgument(
           name: 'main-language',
           abbreviation: 'm',
           isMultiOption: false,
           defaultValue: 'en',
-          describtion:
+          description:
               'the main language in the app to populate the extracted strings in the corresponding json file.'),
       DartedArgument(
           name: 'config',
           abbreviation: 'f',
           isMultiOption: false,
-          describtion:
+          description:
               'configure the process for advanced refinements with a config yaml file.'),
     ],
     flags: [
